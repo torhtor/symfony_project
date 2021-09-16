@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+
+{% block body %}
+
+    {% if panier == null %}
+    <p>Votre panier est vide</p>
+    {% else %}
+        <div>votre panier
+        {% for cp in panier %}
+            <p>{{ cp.product.name }}  {{ cp.quantity }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

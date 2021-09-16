@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer une catégorie{% endblock %}
+
+{% block menu %}
+    {% include 'menuAdmin.html.twig' %}
+{% endblock %}
+
+    {% block body %}
+        {% if app.user.roles == 'ROLE_ADMIN' %}
+        <div class="container">
+            <h2 class="text-danger">Supprimer la catégorie </h2>
+            <div class=" form-group col-3">
+                {{ form_start(form) }}
+                <h3 class="text-danger">Etes-vous sur de vouloir supprimer cette catégorie ? </h3>
+                {{ form_row(form.name) }}
+            </div>
+            <input class="btn btn-danger rounded-pill" type="submit" value="valider">
+            {{ form_end(form) }}
+            <a class="btn btn-warning " href="/admin/edit/category">ANNULER</a>
+        </div>
+        {% endif %}
+    {% endblock %}

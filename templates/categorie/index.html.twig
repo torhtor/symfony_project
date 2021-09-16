@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{categorie.name}}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Les produits de la {{ categorie.name }}</h2>
+        <div class="grid">
+            <a href="/">Retour à la selection de catégorie</a>
+            {% if products == null %}
+                <div>Pas de produit à afficher</div>
+            {% else %}
+
+                {% for product in products %}
+                    {% if product.bio == "oui" %}
+                        <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                            <div class="card-header">
+                                <a href='/products/{{ product.id }}'>{{ product.name }}</a>
+                                <span class="badge rounded-pill bg-info">
+                                    {% for tag in product.tag %}
+                                        {{ tag.name }}
+                                    {% endfor %}
+                                </span> BIO
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ product.image }}" alt="image">
+                                <h4 class="card-title">{{ product.categorie.name }}</h4>
+                                <p class="card-text">{{ product.description}}</p>
+                                {% if product.promo == "oui"%}
+                                    <p class="text-warning">PROMOTION !</p>
+                                    <p><s>{{ product.price }}</s> {{ (product.price * 0.9)|round(2) }} Euros</p>
+                                {% else %}
+                                    <p>{{ product.price }} Euros</p>
+                                {% endif %}
+                                {% if product.stock == 0 %}
+                                    <p class="text-danger">Ce produit n'est plus en stock</p>
+                                {% else %}
+                                    <button onclick="addToCart({{ product.id }})" class="btn rounded-pill bg-warning">Add to cart</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                            <div class="card-header">
+                                <a href=/products/{{ product.id}}>{{ product.name }}</a>
+                                <span class="badge rounded-pill bg-info">
+                                    {% for tag in product.tag %}
+                                        {{ tag.name }}
+                                    {% endfor %}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ product.image }}" alt="image">
+                                <h4 class="card-title">{{ product.categorie.name }}</h4>
+                                <p class="card-text">{{ product.description}}</p>
+                                {% if product.promo == "oui"%}
+                                    <p class="text-warning">PROMOTION !</p>
+                                    <p><s>{{ product.price }}</s> {{ (product.price * 0.9)|round(2) }} Euros</p>
+                                {% else %}
+                                    <p>{{ product.price }} Euros</p>
+                                {% endif %}
+                                {% if product.stock == 0 %}
+                                    <p class="text-danger">Ce produit n'est plus en stock</p>
+                                {% else %}
+                                    <button onclick="addToCart({{ product.id }})" class="btn rounded-pill bg-warning">Add to cart</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

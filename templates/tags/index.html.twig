@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TagsController!{% endblock %}
+
+{% block javascripts %}
+<script>
+    alert ("coucou");
+</script>
+{% endblock %}
+
+{% block body %}
+    {% for tag in tags %}
+    <p><span class="badge rounded-pill bg-info">{{ tag.name }}</span></p>
+    {% endfor %}
+{% endblock %}

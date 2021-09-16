@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un tag{% endblock %}
+
+    {% block menu %}
+        {% include 'menuAdmin.html.twig' %}
+    {% endblock %}
+
+    {% block body %}
+        {% if app.user.roles == 'ROLE_ADMIN' %}
+            <div class="container">
+                <h2>Nouveau Tag : </h2>
+                <div class="form-group col-3">
+                        {{ form_start(form) }}
+                        {{ form_row(form.name) }}
+                </div>
+                <div class="form-check col-6">
+                    {{ form_row(form.products) }}
+                </div>
+                <input class="btn btn-info rounded-pill" type="submit" value="valider">
+                {{ form_end(form) }}
+            </div>
+        {% endif %}
+    {% endblock %}

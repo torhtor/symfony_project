@@ -1,0 +1,280 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function displayCategory(catId){
+            const xhttp = new XMLHttpRequest();
+            xhttp.responseType="json";
+            xhttp.onload = function() {
+                //console.log(xhttp.response);
+                display = '<ul class="grid">';
+                display += '<h4>Tous les produits de la '+xhttp.response[0].category+'</h4>';
+                for (product of xhttp.response){
+                        if (product.bio == "oui") {
+                            display += '<li>';
+                            display += '<div class="card text-white bg-success mb-3" style="max-width: 20rem;">';
+                            display += '<div class="card-header">';
+                            display += '<a href="/products/' + product.id + '">' + product.name + '</a>';
+                            display += '<span class="badge rounded-pill bg-info">';
+                            display += product.tag;
+                            display += '</span> BIO</div>';
+
+                            display += '<div class="card-body">';
+                            display += '<img src="'+product.image+'" alt="image">';
+                            display += '<h4 class="card-title">'+product.category+'</h4>';
+                            display += '<p class="card-text">'+product.description+'</p>';
+
+                            if (product.promo == "oui") {
+                                display += '<p class="text-warning">PROMOTION !</p>';
+                                display += '<p>Prix : <s>' + product.price + '€</s> ' +'---'+ Math.round(product.price * 0.9) + '€</p>';
+                            }else{
+                                display += '<p>Prix : '+product.price+'€</p>';
+                            }
+
+                            if (product.stock == 0 ) {
+                                display += '<p class="text-danger">Ce produit n\'est plus en stock</p>';
+                            }
+                            else{
+                                display += '<button onclick="addToCart(product.id)" class="btn rounded-pill bg-warning">Add to cart</button>'
+                            }
+                            display += '</div>';
+                            display += '</div>';
+                            display += '</li>';
+                        }else{
+                            display += '<li>';
+
+                            display += '<div class="card bg-secondary mb-3" style="max-width: 20rem;">';
+
+                            display += '<div class="card-header">';
+                            display += '<a href="/products/' + product.id + '">' + product.name + '</a>';
+                            display += '<span class="badge rounded-pill bg-info"> ';
+                            display += product.tag;
+                            display += '</span></div>';
+
+                            display += '<div class="card-body">';
+                            display += '<img src="'+product.image+'" alt="image">';
+                            display += '<h4 class="card-title">'+product.category+'</h4>';
+                            display += '<p class="card-text">'+product.description+'</p>';
+
+                            if (product.promo == "oui") {
+                                display += '<p class="text-warning">PROMOTION !</p>';
+                                display += '<p>Prix : <s>' + product.price + '€</s> ' +'---'+ Math.round(product.price * 0.9) + '€</p>';
+                            }else {
+                                display += '<p>Prix : '+product.price+'€</p>';
+                            }
+
+                            if (product.stock == 0){
+                                display += '<p class="text-danger">Ce produit n\'est plus en stock</p>';
+                            }
+                            else{
+                                display += '<button onclick="addToCart(product.id)" class="btn rounded-pill bg-warning">Add to cart</button>'
+                            }
+                            display += '</div>';
+                            display += '</div>';
+                            display += '</li>';
+                        }
+
+                }
+                    display+= '</ul>';
+                    document.getElementById("products").innerHTML = display ;
+
+
+            }
+            url = "/api/boutique/productsByCategory/"+catId;
+            xhttp.open("GET",url, true);
+            xhttp.send();
+        }
+
+        function displayTag(tagId){
+            const xhttp = new XMLHttpRequest();
+            xhttp.responseType="json";
+            xhttp.onload = function() {
+                //console.log(xhttp.response);
+                document.getElementById(tagId).setAttribute('class', 'btn rounded-pill bg-secondary');
+
+                display = '<ul class="grid">';
+                for (product of xhttp.response){
+
+                        if (product.bio == "oui") {
+                            display += '<li>';
+
+                            display += '<div class="card text-white bg-success mb-3" style="max-width: 20rem;">';
+
+                            display += '<div class="card-header">';
+                            display += '<a href="/products/' + product.id + '">' + product.name + '</a>';
+                            display += '<span class="badge rounded-pill bg-info">';
+                            display += product.tag;
+
+
+                            display += '</span> BIO</div>';
+
+                            display += '<div class="card-body">';
+                            display += '<img src="'+product.image+'" alt="image">';
+                            display += '<h4 class="card-title">'+product.category+'</h4>';
+                            display += '<p class="card-text">'+product.description+'</p>';
+
+                            if (product.promo == "oui") {
+                                display += '<p class="text-warning">PROMOTION !</p>';
+                                display += '<p>Prix : <s>' + product.price + '€</s> ' +'---'+ Math.round(product.price * 0.9) + '€</p>';
+                            }else{
+                                display += '<p>Prix : '+product.price+'€</p>';
+                            }
+
+                            if (product.stock == 0 ) {
+                                display += '<p class="text-danger">Ce produit n\'est plus en stock</p>';
+                            } else{
+                                display += '<button onclick="addToCart(product.id)" class="btn rounded-pill bg-warning">Add to cart</button>'
+                            }
+                            display += '</div>';
+                            display += '</div>';
+                            display += '</li>';
+                        }else{
+                            display += '<li>';
+
+                            display += '<div class="card bg-secondary mb-3" style="max-width: 20rem;">';
+
+                            display += '<div class="card-header">';
+                            display += '<a href="/products/' + product.id + '">' + product.name + '</a>';
+                            display += '<span class="badge rounded-pill bg-info"> ';
+                            display += product.tag;
+                            display += '</span></div>';
+
+                            display += '<div class="card-body">';
+                            display += '<img src="'+product.image+'" alt="image">';
+                            display += '<h4 class="card-title">'+product.category+'</h4>';
+                            display += '<p class="card-text">'+product.description+'</p>';
+
+                            if (product.promo == "oui") {
+                                display += '<p class="text-warning">PROMOTION !</p>';
+                                display += '<p>Prix : <s>' + product.price + '€</s> ' +'---'+ Math.round(product.price * 0.9) + '€</p>';
+                            }else {
+                                display += '<p>Prix : '+product.price+'€</p>';
+                            }
+
+                            if (product.stock == 0){
+                                display += '<p class="text-danger">Ce produit n\'est plus en stock</p>';
+                            }
+                            else{
+                                display += '<button onclick="addToCart(product.id)" class="btn rounded-pill bg-warning">Add to cart</button>'
+                            }
+                            display += '</div>';
+                            display += '</div>';
+                            display += '</li>';
+                        }
+
+                    }
+                    display+= '</ul>';
+                    document.getElementById("products").innerHTML = display ;
+
+            }
+
+            url = "/api/boutique/productsByTag/"+tagId;
+            xhttp.open("GET",url, true);
+            xhttp.send();
+
+        }
+
+        function addToCart(productId){
+            const xhttp = new XMLHttpRequest();
+            xhttp.responseType="json";
+            xhttp.onload = function() {
+                console.log(xhttp.response.id);
+                product = xhttp.response.id;
+            }
+            url = "/api/boutique/addToCart/"+productId;
+            xhttp.open("GET",url, true);
+            xhttp.send();
+
+        }
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div>le compteur de visite {{ counter }}</div>
+
+
+    <div class="container">
+    <h1>Bienvenue dans notre boutique,</h1>
+    <h2>En espérant que notre sélection de produits vous satisfera</h2>
+    <h3>Sélectionner une catégorie :</h3>
+        <ul>
+            {% for categorie in categories %}
+                    <button class="btn btn-primary"  onclick="displayCategory({{ categorie.id }})">{{ categorie.name }}</button>
+            {% endfor %}
+        </ul>
+
+
+
+    <h3>Filtrer par tag :</h3>
+        <div class="tag">
+        {% for tag in tags %}
+            <button id="{{ tag.id }}" onclick="displayTag({{ tag.id }})" class="btn rounded-pill bg-info">{{ tag.name }}</button>
+        {% endfor %}
+        </div>
+            <div id="products">
+                {% if product == null %}
+                    <div>Pas de produit à afficher</div>
+                {% else %}
+                    <h3 class="text-warning">Notre sélection de produit</h3>
+                        {% if product.bio == "oui" %}
+                            <div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+                                <div class="card-header">
+                                    <a href='/products/{{ product.id }}'>{{ product.name }}</a>
+                                    <span class="badge rounded-pill bg-info">
+                                        {% for tag in product.tag %}
+                                             {{ tag.name }}
+                                        {% endfor %}
+                                    </span> BIO
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ product.image }}" alt="image">
+                                    <h4 class="card-title">{{ product.categorie.name }}</h4>
+                                    <p class="card-text">{{ product.description}}</p>
+                                    {% if product.promo == "oui"%}
+                                        <p class="text-warning">PROMOTION !</p>
+                                        <p>Prix : <s>{{ product.price }} €</s> --- {{ (product.price * 0.9)|round(2) }} €</p>
+                                    {% else %}
+                                        <p>Prix : {{ product.price }} €</p>
+                                    {% endif %}
+                                    {% if product.stock == 0 %}
+                                        <p class="text-danger">Ce produit n'est plus en stock</p>
+                                    {% else %}
+                                        <button onclick="addToCart({{ product.id }})" class="btn rounded-pill bg-warning">Add to cart</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                                <div class="card-header">
+                                    <a href=/products/{{ product.id}}>{{ product.name }}</a>
+                                    <span class="badge rounded-pill bg-info">
+                                        {% for tag in product.tag %}
+                                            {{ tag.name }}
+                                        {% endfor %}</span>
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ product.image }}" alt="image">
+                                    <h4 class="card-title">{{ product.categorie.name }}</h4>
+                                    <p class="card-text">{{ product.description}}</p>
+                                    {% if product.promo == "oui"%}
+                                        <p class="text-warning">PROMOTION !</p>
+                                        <p>Prix : <s>{{ product.price }} €</s> --- {{ (product.price * 0.9)|round(2) }} €</p>
+                                    {% else %}
+                                        <p>Prix : {{ product.price }} €</p>
+                                    {% endif %}
+                                    {% if product.stock == 0 %}
+                                        <p class="text-danger">Ce produit n'est plus en stock</p>
+                                    {% else %}
+                                        <button onclick="addToCart({{ product.id }})" class="btn rounded-pill bg-warning">Add to cart</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                {% endif %}
+            </div>
+    </div>
+{% endblock %}

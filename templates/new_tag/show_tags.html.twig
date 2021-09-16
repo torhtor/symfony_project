@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block menu %}
+    {% include 'menuAdmin.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if app.user.roles == 'ROLE_ADMIN' %}
+            <button class="btn btn-info rounded-pill"><a  href="/admin/new/tag">Nouveau tag</a></button>
+        {% endif %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">PRODUITS</th>
+                {% if app.user.roles == 'ROLE_ADMIN' %}
+                    <th scope="col">MODIFIER</th>
+                    <th scope="col">SUPPRIMER</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for t in tags %}
+                <tr class="table-dark">
+                    <td>{{ t.id }}</td>
+                    <td>{{ t.name }}</td>
+                    <td>
+                        {% for p in t.products %}
+                        {{ p.name }}
+                        {% endfor %}
+                    </td>
+                    {% if app.user.roles == 'ROLE_ADMIN' %}
+                        <td><a class="btn btn-info" href="tag/{{ t.id }}">MODIFIER</a>
+                        <td><a class="btn btn-danger" href="/admin/delete/tag/{{ t.id }}">SUPPRIMER</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

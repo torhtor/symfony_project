@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block menu %}
+    {% include 'menuAdmin.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if app.user.roles == 'ROLE_ADMIN' %}
+            <button class="btn btn-info rounded-pill"><a  href="/admin/new/category">Nouvelle catégorie</a></button>
+        {% endif %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">NAME</th>
+                    {% if app.user.roles == 'ROLE_ADMIN' %}
+                        <th scope="col">MODIFIER</th>
+                        <th scope="col">SUPPRIMER</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for c in categories %}
+                    <tr class="table-dark">
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.name }}</td>
+                        {% if app.user.roles == 'ROLE_ADMIN' %}
+                            <td><a class="btn btn-info" href="category/{{ c.id }}">MODIFIER</a>
+                            <td><a class="btn btn-danger" href="/admin/delete/category/{{ c.id }}">SUPPRIMER</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

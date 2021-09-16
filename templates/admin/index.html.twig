@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+   {% block menu %}
+      {% include 'menuAdmin.html.twig' %}
+   {% endblock %}
+
+
+
+{% block body %}
+
+<div class="container">
+   <h1>Admin</h1>
+   <p>bienvenue {{ app.user.email }}</p>
+
+   {% if app.user.roles[0] == 'ROLE_ADMIN' %}
+      <p>Votre role est Administrateur</p>
+      <p class="text-info">Vous n'avez aucune réstriction d'utilisation de l'administration, si toutefois vous deviez mofidier des données ou en supprimer <span class="text-danger"> ces actions sont irreversibles et vous pourriez perdre vos données.</span>  </p>
+   {% endif %}
+   {% if app.user.roles[0] == 'ROLE_USER' %}
+      <p>Votre role est Utilisateur</p>
+      <p class="text-info">Vous n'avez pas accès à toutes les fonctionnalités présentent dans l'administration. Votre role vous permet d'ajouter des informations, d'en modifier certaines mais il vous est <span class="text-danger">interdit</span> de supprimer des informations, si vous devez faire ce type d'actions merci de vous référer à un administrateur ! </p>
+   {% endif %}
+</div>
+{% endblock %}

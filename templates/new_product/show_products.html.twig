@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block menu %}
+    {% include 'menuAdmin.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div>
+        <button class="btn btn-info rounded-pill"><a class="btn-info" href="/admin/new/product">Ajouter un produit</a></button>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">DESCRIPTION</th>
+                <th scope="col">PRICE</th>
+                <th scope="col">IMAGE</th>
+                <th scope="col">PROMO</th>
+                <th scope="col">STOCK</th>
+                <th scope="col">BIO</th>
+                <th scope="col">CATEGORIE</th>
+                <th scope="col">TAG</th>
+                {% if app.user.roles == 'ROLE_ADMIN' %}
+                    <th scope="col">MODIFIER</th>
+                    <th scope="col">SUPPRIMER</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for p in products %}
+                <tr class="table-dark">
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.description }}</td>
+                    <td>{{ p.price }}</td>
+                    <td>{{ p.image }}</td>
+                    <td>{{ p.promo }}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{{ p.bio }}</td>
+                    <td>{{ p.categorie }}</td>
+                    <td>
+                        {% for t in p.tag %}
+                        {{ t.name }}
+                        {% endfor %}
+                    </td>
+                    {% if app.user.roles == 'ROLE_ADMIN' %}
+                        <td><a class="btn btn-info" href="product/{{ p.id }}">MODIFIER</a>
+                        <td><a class="btn btn-danger" href="/admin/delete/product/{{ p.id }}">SUPPRIMER</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
